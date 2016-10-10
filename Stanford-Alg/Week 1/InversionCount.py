@@ -44,4 +44,4 @@ if __name__ == '__main__':
     # ci = InversionCount(input1)
     ci = CountInversion()
     ci.read_data()
-    ci.countInverse()
+    ci.countInverse() #  Total inversion #: 2407905288
