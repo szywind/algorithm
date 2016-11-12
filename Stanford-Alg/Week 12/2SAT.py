@@ -16,7 +16,7 @@ class SCC:
         self.visited = {}
         self.finishTime = []
 
-    def read_data(self):
+    def read_data(self, fileName):
         with open(fileName, 'r') as fl:
             n = int(fl.readline())
             for line in fl:
@@ -49,27 +49,6 @@ class SCC:
 
             self.visited = {i:False for i in self.graph}
 
-    def read_data2(self, fileName="SCC.txt"):
-        with open(fileName, 'r') as fl:
-            for line in fl:
-                line = [int(i) for i in line.strip().split(' ')]
-                if line[0] not in self.graph:
-                    self.graph[line[0]] = []
-                if line[0] not in self.rgraph:
-                    self.rgraph[line[0]] = []
-
-                if line[1] not in self.graph:
-                    self.graph[line[1]] = []
-                if line[1] not in self.rgraph:
-                    self.rgraph[line[1]] = []
-
-                self.graph[line[0]].append(line[1])
-                self.rgraph[line[1]].append(line[0])
-
-                self.visited[line[0]] = -1
-                self.visited[line[1]] = -1
-
-
     ''' iterative implementation '''
     def runIterative(self):
         # dfs on reverse graph
@@ -90,40 +69,49 @@ class SCC:
                         self.finishTime.append(cur)
 
         # dfs on original graph
+        # assert len(self.finishTime) == len(self.graph)
+        # for i in self.finishTime:
+        #     self.finishTime.count(i) == 1
+        #
+        # temp = {i: True for i in self.graph}
+        # assert temp == self.visited
+
         szSCC = []
-        self.visited = [False for _ in self.graph]
+        SCC = []
         self.finishTime.reverse()
         for u in self.finishTime:
             # traverse i-th SCC
             sz = 0
-            scc_i =[]
-            if not self.visited[u]: # unvisited for original graph
-                self.visited[u] = True
+            scc_i = set()
+            if self.visited[u]: # unvisited for original graph
+                self.visited[u] = False
                 stack = [u]
                 while stack:
                     node = stack[-1]
                     hasUnvisitedChild = False
 
                     for v in self.graph[node]:
-                        if not self.visited[v]:
-                            self.visited[v] = True
+                        if self.visited[v]:
+                            self.visited[v] = False
                             stack.append(v)
                             hasUnvisitedChild = True
 
                     if not hasUnvisitedChild:
                         # check whether i and -i are in the scc simultaneously
-                        if -node in scc_i:
+                        if (-node) in scc_i:
                             print("The 2-SAT has no solution")
-                            return False
-                        scc_i.append(node)
+                            # return False
+                        scc_i.add(node)
                         stack.pop()
                         sz += 1
                 szSCC.append(sz)
+                SCC.append(scc_i)
 
         szSCC.sort(reverse=True)
         print("Largest Top 5 Strong Connected Component:", szSCC[:5])
         assert len(self.graph) == sum(szSCC)
 
+        SCC.sort(key=len, reverse=True)
         return True
 
 
@@ -132,13 +120,6 @@ def run(file):
     solver.read_data(file)
     print(solver.runIterative())
 
-def run2():
-    solver = SCC()
-    solver.read_data2()
-    solver.runIterative()
-
 if __name__ == '__main__':
     files = ["2sat" + str(i) + ".txt" for i in range(1,7)]
     run(files[2])
-    # 101100
-    # run2()

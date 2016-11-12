@@ -82,6 +82,9 @@ def solve_2sat(n, edges):
         return strong_conn_components
 
     strong_conn_components = find_connected_components(graph, trans_graph)
+
+    strong_conn_components.sort(key=len, reverse=True)
+
     comp = {}
     for v in graph.keys():
         comp[v] = 9000000 + v
@@ -107,14 +110,15 @@ def test():
 def main():
     if len(sys.argv) == 1:
         cases = [
-              ['case01.txt', True],
+              ['case03.txt', True],
               ['case02.txt', False],
               ['case03.txt', True],
             ]
         run_tests(cases, solve_2sat, load_file)
     else:
-        files = ['2sat1.txt',
-                 '2sat2.txt',
+        files = [
+            # '2sat1.txt',
+            #      '2sat2.txt',
                  '2sat3.txt',
                  '2sat4.txt',
                  '2sat5.txt',
