@@ -100,7 +100,7 @@ class SCC:
                         # check whether i and -i are in the scc simultaneously
                         if (-node) in scc_i:
                             print("The 2-SAT has no solution")
-                            # return False
+                            return False
                         scc_i.add(node)
                         stack.pop()
                         sz += 1
@@ -122,4 +122,4 @@ def run(file):
 
 if __name__ == '__main__':
     files = ["2sat" + str(i) + ".txt" for i in range(1,7)]
-    run(files[2])
+    run("case04.txt")
