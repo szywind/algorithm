@@ -108,11 +108,14 @@ class SCC:
                 while stack:
                     node = stack[-1]
                     hasChild = False
-                    for v in self.rgraph[node]:
-                        if self.visited[v] == -1:
-                            self.visited[v] = 0
-                            stack.append(v)
-                            hasChild = True
+                    try:
+                        for v in self.rgraph[node]:
+                            if self.visited[v] == -1:
+                                self.visited[v] = 0
+                                stack.append(v)
+                                hasChild = True
+                    except K:
+                        pass
                     if not hasChild:
                         cur = stack.pop()
                         self.visited[cur] = t
@@ -131,11 +134,14 @@ class SCC:
                 while stack:
                     node = stack[-1]
                     hasChild = False
-                    for v in self.graph[node]:
-                        if self.visited[v] != -1:
-                            self.visited[v] = -1
-                            stack.append(v)
-                            hasChild = True
+                    try:
+                        for v in self.graph[node]:
+                            if self.visited[v] != -1:
+                                self.visited[v] = -1
+                                stack.append(v)
+                                hasChild = True
+                    except KeyError:
+                        pass
                     if not hasChild:
                         stack.pop()
                         sz += 1
