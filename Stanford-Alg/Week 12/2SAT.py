@@ -1,6 +1,6 @@
 '''
-Week 4's Programming Assignment
-Strong Connected Components
+Week 12's Programming Assignment
+2-SAT with Strong Connected Components
 '''
 
 # import sys
@@ -122,4 +122,4 @@ def run(file):
 
 if __name__ == '__main__':
     files = ["2sat" + str(i) + ".txt" for i in range(1,7)]
-    run("case04.txt")
+    run(files[2])
